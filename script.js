@@ -5,8 +5,7 @@ const svg = d3.select("svg"),
 	path = d3.geoPath(),
 	data = d3.map(),
 	worldmap = "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson",
-	worldpopulation = "https://raw.githubusercontent.com/ramzirich/map/master/mlops_world.csv";
-	// worldpopulation = "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv";
+	mlojobsapplication = "https://raw.githubusercontent.com/ramzirich/map/master/mlops_world.csv";
 
 let centered, world;
 
@@ -17,7 +16,7 @@ const projection = d3.geoRobinson()
 
 // Define color scale
 const colorScale = d3.scaleThreshold()
-	.domain([0, 10, 25, 50, 100, 200])
+	.domain([0, 1, 5, 10, 50, 100,200, 250])
 	.range(d3.schemeOrRd[7]);
 
 // add tooltip
@@ -28,7 +27,7 @@ const tooltip = d3.select("body").append("div")
 // Load external data and boot
 d3.queue()
 	.defer(d3.json, worldmap)
-	.defer(d3.csv, worldpopulation, function(d) {
+	.defer(d3.csv, mlojobsapplication, function(d) {
 		data.set(d.code, +d.pop);
 	})
 	.await(ready);
@@ -156,7 +155,7 @@ function ready(error, topo) {
 			return d[0] + " u - " + d[1] + " u";
 		});
 
-	legend.append("text").attr("x", 15).attr("y", 280).text("Population (unit)");
+	legend.append("text").attr("x", 15).attr("y", 280).text("Job Applications (unit)");
 }
 
 // Zoom functionality
