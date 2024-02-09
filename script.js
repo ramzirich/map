@@ -5,7 +5,8 @@ const svg = d3.select("svg"),
 	path = d3.geoPath(),
 	data = d3.map(),
 	worldmap = "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson",
-	worldpopulation = "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv";
+	worldpopulation = "https://raw.githubusercontent.com/ramzirich/map/master/mlops_world.csv";
+	// worldpopulation = "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv";
 
 let centered, world;
 
@@ -63,7 +64,7 @@ function ready(error, topo) {
 			.style("top", (d3.event.pageY - 28) + "px")
 			.transition().duration(400)
 			.style("opacity", 1)
-			.text(d.properties.name + ': ' + Math.round((d.total / 1000000) * 10) / 10 + ' mio.');
+			.text(d.properties.name + ': ' + Math.round((d.total) * 10) / 10 + ' u.');
 	}
 
 	let mouseLeave = function() {
@@ -150,12 +151,12 @@ function ready(error, topo) {
 			return height - (i * ls_h) - ls_h - 6;
 		})
 		.text(function(d, i) {
-			if (i === 0) return "< " + d[1] / 1000000 + " m";
-			if (d[1] < d[0]) return d[0] / 1000000 + " m +";
-			return d[0] / 1000000 + " m - " + d[1] / 1000000 + " m";
+			if (i === 0) return "< " + d[1] + " u";
+			if (d[1] < d[0]) return d[0]  + " u +";
+			return d[0] + " u - " + d[1] + " u";
 		});
 
-	legend.append("text").attr("x", 15).attr("y", 280).text("Population (Million)");
+	legend.append("text").attr("x", 15).attr("y", 280).text("Population (unit)");
 }
 
 // Zoom functionality
