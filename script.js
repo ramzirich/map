@@ -15,9 +15,10 @@ const projection = d3.geoRobinson()
 	.translate([width / 2, height / 2]);
 
 // Define color scale
+const customColorRange = ["#eee", "#fee6ce", "#fdd0a2", "#fb6a4a", "#fd8d3c", "#f16913", "#d94801", "#8c2d04", "#ce2029"];
 const colorScale = d3.scaleThreshold()
-	.domain([0, 1, 5, 10, 50, 100,200, 250])
-	.range(d3.schemeOrRd[7]);
+	.domain([0,1, 5, 10, 50, 100,200, 250])
+	.range(d3.schemeOrRd[9]);
 
 // add tooltip
 const tooltip = d3.select("body").append("div")
@@ -113,7 +114,7 @@ function ready(error, topo) {
   
 	// Legend
 	const x = d3.scaleLinear()
-		.domain([2.6, 75.1])
+		.domain([-1, 75.1])
 		.rangeRound([600, 860]);
 
 	const legend = svg.append("g")
@@ -122,9 +123,13 @@ function ready(error, topo) {
 	const legend_entry = legend.selectAll("g.legend")
 		.data(colorScale.range().map(function(d) {
 			d = colorScale.invertExtent(d);
+			// console.log(colorScale.domain());
+			// console.log(colorScale.range());
 			if (d[0] == null) d[0] = x.domain()[0];
 			if (d[1] == null) d[1] = x.domain()[1];
 			return d;
+		// 	const domain = colorScale.invertExtent(d);
+        // return [domain[0], domain[1]];
 		}))
 		.enter().append("g")
 		.attr("class", "legend_entry");
@@ -140,6 +145,8 @@ function ready(error, topo) {
 		.attr("width", ls_w)
 		.attr("height", ls_h)
 		.style("fill", function(d) {
+			// console.log("d[0]:", d[0]);
+			// console.log("d[1]:", d[1]);
 			return colorScale(d[0]);
 		})
 		.style("opacity", 0.8);
@@ -150,12 +157,13 @@ function ready(error, topo) {
 			return height - (i * ls_h) - ls_h - 6;
 		})
 		.text(function(d, i) {
-			if (i === 0) return "< " + d[1] + " u";
+			console.log(d);
+			if (i === 0) return "" + d[1] + " u";
 			if (d[1] < d[0]) return d[0]  + " u +";
 			return d[0] + " u - " + d[1] + " u";
 		});
 
-	legend.append("text").attr("x", 15).attr("y", 280).text("Job Applications (unit)");
+	legend.append("text").attr("x", 15).attr("y", 240).text("Job Applications (unit)");
 }
 
 // Zoom functionality
